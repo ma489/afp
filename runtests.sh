@@ -1,2 +1,2 @@
 #!/bin/sh
-runhaskell -isrc/games test/games/TestMasterMind.hs
+runhaskell -isrc/ test/TestMasterMind.hs
