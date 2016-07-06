@@ -15,7 +15,6 @@ import qualified Data.Map.Strict as Map
 type VariableName = String
 
 data Expression = Variable VariableName
-                  | Constant Int
                   | Application Expression Expression
                   | Abstraction VariableName Expression
                   -- deriving (Eq)
@@ -27,7 +26,7 @@ instance Show Expression where
     show (Application e1 e2) = "(" ++ show e1 ++ ") (" ++ show e2 ++ ")"
     show (Abstraction v e) = filter (/='"') ("λ" ++ show v ++ "." ++ show e)
 
-type Context = Map.Map VariableName Expression
+type Context = Map.Map VariableName Expression --TODO: review (infinite list of fresh names?)
 
 {- Operations on these expression -}
 
@@ -64,8 +63,11 @@ evaluate (Application e1 e2) context = substitute (evaluate (normalForm e2) cont
 variable :: Expression
 variable = Variable "x"
 
+zero :: Expression
+zero = Abstraction "f" (Abstraction "x" ("x"))
+
 sampleContext :: Context
-sampleContext = Map.fromList [("x", Constant 1)]
+sampleContext = Map.fromList [("x", zero)]
 
 abstraction :: Expression
 abstraction = Abstraction "x" (Variable "x") -- identity
