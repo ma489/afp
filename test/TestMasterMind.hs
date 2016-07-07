@@ -25,4 +25,6 @@ testCase solution guess output = TestLabel ("Test Check " ++ solutionAndGuess) t
                                           message = "for check " ++ solutionAndGuess
                                           solutionAndGuess = show solution ++ " " ++ show guess
 
-main = runTestTT tests
+main = do
+    putStrLn "> Testing MasterMind..."
+    runTestTT tests

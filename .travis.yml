@@ -1,3 +1,5 @@
 language: Haskell
 ghc: '7.10'
 script: test/runtests.sh
+notifications:
+  email: false
