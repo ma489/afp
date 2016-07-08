@@ -8,8 +8,8 @@ import System.Random  -- for randoms
 import System.IO      -- for hFlush
 
 type Row = [Int]
-type Guess = Row
-type Solution = Row
+newtype Guess = Guess Row deriving (Show)
+newtype Solution = Solution Row deriving (Show)
 
 colors :: Int
 colors = 6
@@ -33,28 +33,28 @@ generateSolution =
   do
     g <- getStdGen
     let rs = take width (randoms g)
-    return (map ((+1) . (`mod` colors)) rs)
+    return $ Solution $ (map ((+1) . (`mod` colors)) rs)
 
 -- The loop function is supposed to perform a single interaction. It
 -- reads an input, compares it with the solution, produces output to
 -- the user, and if the guess of the player was incorrect, loops.
 loop :: Solution -> Integer -> IO ()
-loop s turns =
+loop (Solution s) turns =
   do
-    i <- input s           -- read (and parse) the user input
+    (Guess i) <- input (Solution s)           -- read (and parse) the user input
     let (b, w, correctSolution) = check s i
     putStrLn $ report (b, w, correctSolution)
     if correctSolution then do
       putStrLn ("Took " ++ show turns ++ " turns")
       exitSuccess
-    else loop s (turns + 1)
+    else loop (Solution s) (turns + 1)
 
 --div rounds down. odd number indicates the number exists more times in one list than the other
-black :: Solution -> Guess -> Int
+black :: Row -> Row -> Int
 black solution guess = count $ zipWith (==) solution guess
                         where count = length . filter id
 
-white :: Solution -> Guess -> Int
+white :: Row -> Row -> Int
 white solution guess = sum $ map (count . symmetricDifference) positions
                         where count = (`div` 2) . length
                               positions = keepNonMatchingPositions $ map getPositions guess
@@ -65,13 +65,13 @@ white solution guess = sum $ map (count . symmetricDifference) positions
 symmetricDifference :: Eq a => ([a],[a]) -> [a]
 symmetricDifference (a,b) = (a \\ b) `union` (b \\ a)
 
-check :: Solution -> Guess -> (Int,   -- number of black points,
-                               Int,   -- number of white points
-                               Bool)  -- all-correct guess?
+check :: Row -> Row -> (Int,   -- number of black points,
+                         Int,   -- number of white points
+                         Bool)  -- all-correct guess?
 check solution guess = let blackScore = black solution guess in
-                          (blackScore,
-                           white solution guess,
-                           blackScore == width)
+                                                (blackScore,
+                                                 white solution guess,
+                                                 blackScore == width)
 
 -- report is supposed to take the result of calling check, and
 -- produces a descriptive string to report to the player.
@@ -82,7 +82,7 @@ report (blackScore, whiteScore, correct) =
 
 -- The function input is supposed to read a single guess from the player.
 input :: Solution -> IO Guess
-input s =
+input (Solution s) =
   do
     putStr "? "
     hFlush stdout -- ensure that the prompt is printed
@@ -92,7 +92,7 @@ input s =
       exitSuccess
     else do
       let inputGuess = map readInt (words l)
-      if not (valid inputGuess) then input s else return inputGuess
+      if not (valid $ Guess inputGuess) then (input $ Solution s) else return (Guess inputGuess)
 
 -- The following function |readInt| is given and parses a single
 -- integer from a string. It produces |-1| if the parse fails.
@@ -104,5 +104,5 @@ readInt x =
 
 -- The function valid tests a guess for validity.
 valid :: Guess -> Bool
-valid guess = length guess == width && inRange guess
-                where inRange = foldl (\a g -> g >= 1 && g <= colors && a) True
+valid (Guess guess) = length guess == width && inRange guess
+                      where inRange = foldl (\a g -> g >= 1 && g <= colors && a) True

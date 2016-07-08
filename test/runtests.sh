@@ -7,4 +7,5 @@ if [ "$currentdir" != $testdir ]
 fi
 
 runhaskell -i../src/ TestMasterMind.hs
+runhaskell -i../src/ QuickCheckMastermind.hs
 runhaskell -i../src/ TestTreeLabeling.hs
