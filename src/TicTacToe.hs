@@ -1,6 +1,8 @@
 {- Tic-Tac-Toe
     https://en.wikipedia.org/wiki/Tic-tac-toe -}
 
+module TicTacToe where
+
 {- Rose Trees -}
 
 -- aka muti-way tree. Will be used to represent the game tree
@@ -95,6 +97,7 @@ checkForWinningRow (row:rows) winningRow = row == winningRow || checkForWinningR
 -- of a node represent the valid moves than can be made from the state in the parent node
 gameTree :: Player -> Board -> RoseTree Board
 gameTree player board = undefined
+--board :> map ((:>) gameTree player) (moves player board) -- TODO: FIXME filter? use hasWinner?
 
 {- Game complexity -}
 

@@ -1,6 +1,8 @@
 {- smooth_perms: returns all permutations of its second argument for which the
    distance between each two successive elements is at most the first argument -}
 
+module SmoothPermutations where
+
 import Data.List
 
 {- naive; expensive -}

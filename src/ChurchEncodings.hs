@@ -3,12 +3,14 @@
 --required for higher-rank polymorphism (see use of 'forall' in definition of ChurchNat)
 {-# LANGUAGE RankNTypes #-}
 
+module ChurchEncodings where
+
 -- Church numerals: representation of natural numbers under Church encoding
 -- rank-2 type because the function argument is polymorphic
 data ChurchNat = ChurchNat (forall a. (a -> a) -> a -> a)
 
 instance Show ChurchNat where
-    show n = "{ " ++ (show $ churchToInt n) ++ " , " ++ (show $ churchToString n) ++ " }"
+    show n = "{ " ++ show (churchToInt n) ++ " , " ++ show (churchToString n) ++ " }"
 
 -- operations
 churchToInt :: ChurchNat -> Int

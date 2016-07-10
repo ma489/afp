@@ -3,6 +3,8 @@
 
 {- Higher-rank polymorphism -}
 
+module AdvancedTypeSystems where
+
 -- In standard Haskell, let-bound variables can be polymorphic, where as lambda-bound variables cannot (always monomorphic)
 -- So, Haskell only allows you to use polymorphic functions if defined in let's, where's, or in a top-level definition
         -- and not if defined they were passed in through the argument of a surrounding lambda
@@ -19,7 +21,7 @@ polymorphicWhere = (f 3, f 'a') where f = id
 
 -- top-level example: f is polymorphic (here operating on an Integer and a Char)
 f :: a -> a
-f = \x -> x
+f x = x
 polymorphicTopLevel :: (Int, Char)
 polymorphicTopLevel = (f 3, f 'a')
 

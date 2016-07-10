@@ -22,7 +22,6 @@ data Expression = Variable VariableName
 --for pretty-printing
 instance Show Expression where
     show (Variable v) = filter (/='"') $ show v
-    show (Constant v) = show v
     show (Application e1 e2) = "(" ++ show e1 ++ ") (" ++ show e2 ++ ")"
     show (Abstraction v e) = filter (/='"') ("λ" ++ show v ++ "." ++ show e)
 
@@ -64,7 +63,7 @@ variable :: Expression
 variable = Variable "x"
 
 zero :: Expression
-zero = Abstraction "f" (Abstraction "x" ("x"))
+zero = Abstraction "f" (Abstraction "x" (Variable "x")) --TODO
 
 sampleContext :: Context
 sampleContext = Map.fromList [("x", zero)]

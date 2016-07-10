@@ -5,6 +5,8 @@
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DeriveAnyClass #-}
 
+module GenericProgramming where
+
 import Data.Generics (Data, gshows) -- SYB
 import GHC.Generics -- this and the below are used by Generic Deriving
 import qualified Generics.Deriving.Show as GenDer

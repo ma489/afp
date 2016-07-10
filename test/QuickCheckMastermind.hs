@@ -3,7 +3,7 @@
 
 -- (non-exhaustive) testing cannot prove the absence of bugs.
 
-module QuickCheckMasterMind where
+module QuickCheckMastermind where
 
 import Test.QuickCheck
 import qualified MasterMind as MasterMind
