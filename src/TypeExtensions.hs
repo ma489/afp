@@ -1,6 +1,8 @@
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE KindSignatures #-}
 
+module TypeExtensions where
+
 {- Type extensions: GADT (Generalized Abstract Datatype) (2.6.1) -}
 
 -- GADTs allow us to describe more precise types
