@@ -1,3 +1,4 @@
 *.o
 src/**/*.o
 test/**/*.o
+*.pdf
